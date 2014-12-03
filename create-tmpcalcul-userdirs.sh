@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USER_GROUPS="st3c semia sams sagr dsusec"
+USER_GROUPS="test test2 test3 test4 test5"
 
 for g in ${USER_GROUPS}
 do
