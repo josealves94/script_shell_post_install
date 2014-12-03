@@ -52,10 +52,10 @@ print "* Veuillez saisir le nom de l'utilisateur   *\n";
 print "*********************************************\n";
 my $line = readline(*STDIN);
 chomp($line);
-#my@command = `/usr/bin/rsh astou201  quota report |/bin/grep -i $line` ;
+#my@command = `/usr/bin/rsh filer1  quota report |/bin/grep -i $line` ;
 
 #print "$line\n";
-#my @command = `/usr/bin/rsh astou201  quota report |grep -i $line` ;
+#my @command = `/usr/bin/rsh filer1  quota report |grep -i $line` ;
 
 # verifie si en entree on recoit un espace vide ou rien d'autre
 my $data = read_file($qt_file);
@@ -66,7 +66,7 @@ my $data = read_file($qt_file);
  }
  else
  {
- my @command = `/usr/bin/rsh astou201  quota report |/bin/grep -i $line` ; 
+ my @command = `/usr/bin/rsh filer1  quota report |/bin/grep -i $line` ; 
  my @quota_report;
 
   foreach my $ligne (@command)
@@ -162,7 +162,7 @@ print "==========\tSauvegarde du fichier terminée\t==========\n";
 		 write_file($qt_file, $data);
 		print "redimensionnement du volume volunix effectué ...\n";
 		 # resize du volume sur le filer
-		 # system("/usr/bin/rsh astou201 quota resize volunix");
+		 # system("/usr/bin/rsh filer1 quota resize volunix");
 		 exit;
 		}	
 	}
@@ -192,7 +192,7 @@ print "==========\tSauvegarde du fichier terminée\t==========\n";
 			$data2 =~ s/$extract[2]/$qt_input2/g;
 			write_file($qt_file, $data2);
 			  # resize du volume sur le filer
-			  #  system("/usr/bin/rsh astou201 quota resize volpst");
+			  #  system("/usr/bin/rsh filer1 quota resize volpst");
 			print "redimensionnement du volume volpst effectué ...\n";
 			exit;
 			}
@@ -220,7 +220,7 @@ print "==========\tSauvegarde du fichier terminée\t==========\n";
          	$data3 =~ s/$extract[2]/$qt_input3/g;
 		write_file($qt_file, $data3);
 		# resize du volume sur le filer
-		#  system("/usr/bin/rsh astou201 quota resize volhome");
+		#  system("/usr/bin/rsh filer1 quota resize volhome");
 		print "redimensionnement du volume volhome windows effectuée ...\n";
 		exit;
 		}
