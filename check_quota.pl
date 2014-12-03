@@ -47,7 +47,7 @@ sub check_quota()
 {
 my $qt_file = "quotas";
 print "*********************************************\n";
-print "*Verification du quota sur le filer astou201*\n";
+print "*Verification du quota sur le filer filer1*\n";
 print "* Veuillez saisir le nom de l'utilisateur   *\n";
 print "*********************************************\n";
 my $line = readline(*STDIN);
@@ -107,7 +107,7 @@ sub mod_quota()
 {
 #my $qt_file = "quotas";
 print "*********************************************\n";
-print "*Modification du quota sur le filer astou201*\n";
+print "*Modification du quota sur le filer filer1  *\n";
 print "* Veuillez saisir le nom de l'utilisateur   *\n";
 print "*********************************************\n";
 my $lnm = readline(*STDIN);
@@ -119,7 +119,7 @@ chomp($lnm);
   }
   else
   {
-  # test avec fichier de quota de test dans le repertoire courant - changer le chemin vers /filers/astou201/volroot/etc/quotas une fois sur du fonctionnement
+  # test avec fichier de quota de test dans le repertoire courant - changer le chemin vers /filers/filer1/volroot/etc/quotas une fois sur du fonctionnement
     my @cmd = `cat /root/admin/scripts/JAL/quota_filers/quotas |grep -i $lnm`;
      my @quota_report_mod;
      my $qt_file = "quotas";
@@ -133,7 +133,7 @@ print "==========\tSauvegarde du fichier terminée\t==========\n";
 
 	# si volume unix on modifie sinon si volume pst on modifie sinon si volume windows volhome on modifie etc 
 	print "Plusieurs volumes sont présents (volunix) , (volpst) et (volhome) \n";
-	print " Veuillez choisir le volume en fonction de votre demande gipsi: \n";
+	print " Veuillez choisir le volume en fonction de votre N° de  demande : \n";
 	print "Taper (v) pour volunix ou taper (p) pour volpst ou taper (u) pour volhome \n";
 	
 	my $vol_input = readline(*STDIN);
