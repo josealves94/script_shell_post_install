@@ -244,7 +244,7 @@ print "==========\tSauvegarde du fichier terminée\t==========\n";
 
 # menu des choix
 print "******************************************************************	*\n";
-print "*Verification/modification  du quota sur le filer astou201		*\n";
+print "*Verification/modification  du quota sur le filer filer1		*\n";
 print "* Pour modifier le quota taper (m)			         	*\n";
 print "* Pour verifier le quota taper (c)			   		*\n";
 print "* Pour quitter  taper (q)                		 	 	*\n";
