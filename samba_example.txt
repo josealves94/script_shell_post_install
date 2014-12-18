@@ -1,0 +1,74 @@
+# Global Configuration
+
+[global]
+workgroup = NEUTRON
+server string = %h server (Samba %v)
+netbios name = APAZU201
+security = share
+log file = /var/log/samba/%m.log
+max log size = 1000
+syslog = 0
+socket options = TCP_NODELAY
+
+[Zone_depot_C3X]
+comment = Zone Depot C3X des agents IRSN autorises
+valid users = c3x
+browseable = yes
+writeable = yes
+read only = no
+create mask = 0640
+directory mask = 0750
+path = /data/Zone_depot_C3X
+# postes des agents IRSN autorises.
+# ip agents bsta, agents bspa, agents ccr, agents lrc et autres utilisateurs irsn de C3X.
+hosts allow =   81.194.12.233,\
+                81.194.13.195,\
+                81.194.12.111,\
+                81.194.13.116,\
+                81.194.4.70,\
+                81.194.13.89,\
+                81.194.12.60,\
+                81.194.13.146,\
+                81.194.13.119,\
+                81.194.12.237,\
+                81.194.13.223,\
+                81.194.13.186,\
+                81.194.13.231,\
+                81.194.13.200,\
+                81.194.13.112,\
+                81.194.13.72,\
+                81.194.13.28,\
+                81.194.12.239,\
+                81.194.10.201,\
+                
+  FICHIER JDE :
+
+[global]
+workgroup = PROTON
+realm = proton.intra.irsn.fr
+netbios name = calliope-11
+server string = %h calliope-11
+
+security = share
+encrypt passwords = true
+#invalid users = root
+
+# Log configuration
+log file = /var/log/samba/log.%m
+max log size = 1000
+syslog = 5
+panic action = /usr/share/samba/panic-action %d
+
+# Disable printer
+load printers = no
+
+[partage]
+comment = partage oresia
+path = /home/oresia/share
+#guest ok = yes
+browseable = yes
+ read only = no
+writable = yes
+create mask = 0640
+directory mask = 0750
+valid users = oresia
