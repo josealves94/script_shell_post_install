@@ -138,11 +138,11 @@ if($ARGV[0])
                 my $j;
                 my $h;
 
-                # On test si le repertoire /irsn existe
-                if(-d '/irsn')
+                # On test si le repertoire /rep existe
+                if(-d '/rep')
                 {
-                        # on recupere tout les sous repertoires de /irsn/
-                        open HL, "ls /irsn/ \|grep local |";
+                        # on recupere tout les sous repertoires de /rep/
+                        open HL, "ls /rep/ \|grep local |";
                         @resultdirectory = <HL>;
                         chomp (@resultdirectory);
                         close(HL);
@@ -150,7 +150,7 @@ if($ARGV[0])
 
                         for($i=0;$i<$taille_tab1;$i++)
                         {
-                                # On recupere et on stock la liste des repertoire ou fichiers en dessous de /irsn/localXX/
+                                # On recupere et on stock la liste des repertoire ou fichiers en dessous de /rep/localXX/
                                 open HLL, "ls /irsn/$resultdirectory[$i]/ |";
                                 @result =<HLL>;
                                 chomp (@result);
@@ -159,13 +159,13 @@ if($ARGV[0])
 
                                 for($p=0;$p<$taille_tab2;$p++)
                                 {
-                                        if (-d "/irsn/$resultdirectory[$i]/$result[$p]" || -e "/irsn/$resultdirectory[$i]/$result[$p]")
+                                        if (-d "/irsn/$resultdirectory[$i]/$result[$p]" || -e "/rep/$resultdirectory[$i]/$result[$p]")
                                         {
                                                 # Si des repertoires sont nommes "appli" ou "freeware" alors on affiche 
                                                 # les applications qui y sont deposees
                                                 if( $result[$p] eq "appli" || $result[$p] eq "freeware")
                                                 {
-                                                        open HLL, "ls /irsn/$resultdirectory[$i]/$result[$p] |";
+                                                        open HLL, "ls /rep/$resultdirectory[$i]/$result[$p] |";
                                                         @result2 =<HLL>;
                                                         chomp (@result2);
                                                         close(HLL);
@@ -196,7 +196,7 @@ if($ARGV[0])
                                                                 if( $result3[$h] eq "appli" || $result3[$h] eq "freeware")
                                                                 {
 
-                                                                open HLL, "ls /irsn/$resultdirectory[$i]/$result[$p]/$result3[$h] |";
+                                                                open HLL, "ls /rep/$resultdirectory[$i]/$result[$p]/$result3[$h] |";
                                                                 @result4 =<HLL>;
                                                                 chomp (@result4);
                                                                 close(HLL);
@@ -1043,13 +1043,13 @@ $ARGV[0] eq "TachePlanni" && do {
                 my $hostname=<RE>;
                 chomp($hostname);
                 close(RE);
-                if($hostname=~ m/.ipsn.fr/ || $hostname=~ m/.irsn.fr/ || $hostname=~ m/.neutron.intra.irsn.fr/)
+                if($hostname=~ m/.ipsn.fr/ || $hostname=~ m/.toto.fr/ || $hostname=~ m/.nono.intra.toto.fr/)
                 {
                         if($hostname=~ m/.ipsn.fr/)
                         {
-                                $hostname=~ s/.ipsn.fr//;
+                                $hostname=~ s/.toto.fr//;
                         }
-                        elsif($hostname=~ m/.neutron.intra.irsn.fr/)
+                        elsif($hostname=~ m/.nono.intra.toto.fr/)
                         {
                                 $hostname=~ s/.neutron.intra.irsn.fr//;
                         }
