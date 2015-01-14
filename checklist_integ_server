@@ -1,0 +1,29 @@
+- affectation du ticket 
+- Nommage du serveur en respectant le nommage de l'entreprise
+- Etiquetage du serveur
+- Reservation de l'adresse dans le serveur dhcp ou dans le pool d'adresses.
+- Création d'une entrée DNS
+- Mise à jour du bios et des firmwares
+- configuration du RAID
+- script de postinstall ou kickstart pour automatiser l'installation des packages.
+ - installation du système 
+ - Mise à jour du sytème
+ - Configuration du proxy si présent 
+ - Configuration des interfaces réseau en ipv6 si celui-ci activé
+ - Configuration du firewall
+ - COnfiguration de selinux (RHEL)
+ - Configuration d uresolver dns
+ - configuration de postfix
+ - configuration du client NTP
+ - configuration du client SSH
+ - installation des outils HP si machine HP
+ - installation des clés ssh d'administration
+- Enregistrement du serveur si Red hat sur RHN
+- AJout du serveur dans la supervision
+- Ajout du serveur dans la sauvegarde Netbackup
+- SI le serveur est virtuel :
+ Installation des vmware-tools
+- Générer le DEX (document d'exploitation)
+- MAJ du fichier de schéma des baies
+- MAJ du fichier de suivi des serveurs
+ 
