@@ -1,3 +1,37 @@
+Pour configurer la version 5 de rsyslog 
+il faut créer un fichier qui commence par 00-servers.conf dans le répertoire /etc/rsyslog.d :
+
+
+
+$ModLoad imudp
+$UDPServerRun 514
+$AllowedSender UDP, 127.0.0.1, 81.194.4.16, 192.168.126.244
+
+$template SERVERLOG,"/irsn/local01/rsyslog/Servers/%HOSTNAME%/%syslogfacility%.%syslogpriority%-%syslogtag%.log"
+#$template SERVERLOG,"/irsn/local01/rsyslog/Servers/%fromhost-ip%/syslog.log"
+
+# Log all messages to the dynamically formed file. Now each clients log (192.168.1.2, 192.168.1.3,etc...), will be under a separate directory which is formed by the template SERVERLOG.
+#*.* ?SERVERLOG
+
+if $programname == 'snmpd' and ( $msg contains 'Connection from UDP' or $msg contains 'Received SNMP packet(s) from UDP' ) then ~
+
+if $hostname contains 'error' or  $hostname contains 'fatal' then {
+
+:hostname, isequal, "alogu201v" ~
+:hostname, regex, "[uU]20" ?SERVERLOG
+:hostname, isequal, "anisu201" ~
+#:hostname, regex, "[uU]20" ?SERVERLOG
+:hostname, regex, "fatal .* error"
+:hostname, isequal, "aadmu202v" ~
+:hostname, regex, "[uU]20" ?SERVERLOG
+}
+& ~
+
+
+
+============================================================
+Configuration de la Version 3 ci-dessous
+
 Rajout du logrotate et création du fichier rsyslog_logrotate  /etc/logrotate.d/rsyslog_logrotate (1 semaine de retention pour l'instant) avec la syntaxe suivante :
 
 /var/opt/syslog/*/secure.log /var/opt/syslog/*/messages.log  {
