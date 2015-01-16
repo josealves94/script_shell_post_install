@@ -5,7 +5,7 @@ il faut créer un fichier qui commence par 00-servers.conf dans le répertoire /
 
 $ModLoad imudp
 $UDPServerRun 514
-$AllowedSender UDP, 127.0.0.1, 81.194.4.16, 192.168.126.244
+$AllowedSender UDP, 127.0.0.1, 192.168.1.2 , 192.168.1.4
 
 $template SERVERLOG,"/irsn/local01/rsyslog/Servers/%HOSTNAME%/%syslogfacility%.%syslogpriority%-%syslogtag%.log"
 #$template SERVERLOG,"/irsn/local01/rsyslog/Servers/%fromhost-ip%/syslog.log"
@@ -17,12 +17,12 @@ if $programname == 'snmpd' and ( $msg contains 'Connection from UDP' or $msg con
 
 if $hostname contains 'error' or  $hostname contains 'fatal' then {
 
-:hostname, isequal, "alogu201v" ~
+:hostname, isequal, "server1" ~
 :hostname, regex, "[uU]20" ?SERVERLOG
-:hostname, isequal, "anisu201" ~
+:hostname, isequal, "server2" ~
 #:hostname, regex, "[uU]20" ?SERVERLOG
 :hostname, regex, "fatal .* error"
-:hostname, isequal, "aadmu202v" ~
+:hostname, isequal, "server3" ~
 :hostname, regex, "[uU]20" ?SERVERLOG
 }
 & ~
