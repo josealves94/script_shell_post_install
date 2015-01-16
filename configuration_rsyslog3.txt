@@ -1,0 +1,116 @@
+Rajout du logrotate et création du fichier rsyslog_logrotate  /etc/logrotate.d/rsyslog_logrotate (1 semaine de retention pour l'instant) avec la syntaxe suivante :
+
+/var/opt/syslog/*/secure.log /var/opt/syslog/*/messages.log  {
+    # frequence de rotation par jour
+    daily
+    # pas d'erreur si fichier manquant
+    missingok
+    # on conserve 7 fichiers soit une semaine
+    rotate 7
+    # les fichiers sont compresses
+    compress
+    # reporte au prochain cycle
+    delaycompress
+    # ne permute pas lorsque le fichier est vide
+    notifempty
+    # cree un nouveau fichier
+    create 640 root
+    # execute une seule fois le script par rotation
+    sharedscripts
+    # execute apres la rotation
+    postrotate
+     # redemarre rsyslog
+#       /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+#       /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
+   if [ -f /var/run/rsyslogd.pid ]; then
+        /etc/init.d/rsyslog reload > /dev/null
+   fi
+    # fin du script
+    endscript
+}
+
+
+-------- Original Message -------- 
+Subject: 	Fwd: configuration de rsyslog sur aadmu201 (centralisation des logs)
+Date: 	Mon, 25 Mar 2013 12:16:28 +0100
+From: 	Alves José <jose.alves-neurones@irsn.fr>
+
+To: 	@ INFOGERANCE:Unix <infogeranceunix@irsn.fr>
+
+
+
+J'ai modifié la partie template dans le fichier rsyslog.conf sur aadmu201 pour lui préciser le type de log par hôte.
+
+La  syntaxe est la suivante :
+$template DYNmessages,"/var/opt/syslog/%HOSTNAME%/messages-%$HOSTNAME%-$YEAR%-%$MONTH%-%$DAY%.log
+$template DYNsecure,"/var/opt/syslog/%HOSTNAME%/secure-%HOSTNAME%-%$YEAR%-%$MONTH%-%$DAY%.log
+
+
+
+-------- Original Message -------- 
+Subject: 	configuration de rsyslog sur aadmu201 (centralisation des logs)
+Date: 	Thu, 21 Mar 2013 18:30:13 +0100
+From: 	Alves José <jose.alves-neurones@irsn.fr>
+
+To: 	@ INFOGERANCE:Unix <infogeranceunix@irsn.fr>
+
+
+
+configuration côté serveur sur aadmu201 :
+
+Pour info, j'ai repris les exemples de configuration qui se trouvent la-dedans  http://wiki.rsyslog.com/index.php/Configuration_Samples
+On édite et on rajoute les lignes ci-dessous dans  le fichier /etc/rsyslog.conf
+
+Les modules à rajouter :
+$ModLoad imuxsock.so
+$ModLoad imklog.so
+$ModLoad imudp.so
+
+la conf réseau :
+$UDPServerAddress 0.0.0.0 
+$UDPServerRun 514 // port 514 udp
+
+on enlève les doublons dans les logs :
+
+$RepeatedMsgReduction on
+
+On filtre les messages de l'hôte lui-même.
+
+On créée ensuite des regle par host par exemple pour le mail , l'authentification et les taches cron :
+if \
+        $source == 'hostname' \
+        and \
+               $syslogseverity <= '6' \
+        and ( \
+                        $syslogfacility-text != 'mail' \
+                and \
+                        $syslogfacility-text != 'authpriv' \
+                and \
+                        $syslogfacility-text != 'cron' \
+        ) \
+then   /var/log/messages;TraditionalFormat
+
+
+On créee un template specificant où l'on souhaite stocker nos fichiers de logs pour chaque hote . rsyslog nous créée les répertoires par host .
+
+$template DailyPerHostLogs,"/var/opt/syslog/%HOSTNAME%/%HOSTNAME%.%$YEAR%-%$MONTH%-%$DAY%.log"
+*.* -?DailyPerHostLogs;TraditionalFormat
+
+On rajoute une tache cron en créeant un fichier de log dans /etc/cron.hourly/, on cempresse tous les jours le répertoire pour pas que nos logs soit trop gros :
+find /var/opt/syslog -type f -mtime 1  -name "*.log" -exec bzip2 '{}' \;
+
+
+
+Configuration côté client sur anisu201 :
+on édite le fichier /etc/rsyslog ou /etc/syslog.conf suivant les distribs 
+Dans notre cas le test a été effectué sur le serveur anisu201 :
+[root@anisu201 ~]# vi /etc/syslog.conf
+on edite le fichier et on ajoute ce que l'on veut logger vers notre serveur rsyslog central (aadmu201) 
+*.emerg                                                 @aadmu201.neutron.intra.irsn.fr
+authpriv.*                                              @aadmu201.neutron.intra.irsn.fr
+
+On teste l'envoi de message de log avec logger :
+logger -t authpriv.info "ceci est un test"
+
+
+On vérifie ensuite côté serveur qu'on a bien reçu les nouveaux logs
