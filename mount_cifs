@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mount -t cifs //serveur_windows /mnt/serveur_windows -o username=ALVES-JOS,domain=PROTON,iocharset=utf8,file_mode=0777,dir_mode=0777',credentials=/root/admin/credntials/fichier.cred
