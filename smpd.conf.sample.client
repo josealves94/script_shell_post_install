@@ -1,0 +1,91 @@
+#########################################################################
+# Ceci est un modele de fichier snmpd.conf. Ces informations sont
+# a ajouter aux fichiers snmpd.conf sur tout les serveurs ou les
+# informations devront etre relevees.
+# On authorise en utilisant la communaute spiritway, uniquement les
+# 
+#
+#########################################################################
+
+
+#dlmod cmaX /usr/lib/libcmaX.so # 32bits
+#dlmod cmaX /usr/lib64/libcmaX64.so # 64 Bits
+
+rocommunity exploit 81.194.4.11
+rocommunity public 127.0.0.1
+
+## Securite
+##       sec.name     source           community
+##       ========     ======           =========
+com2sec  network_exploit  192.168.1.0/24        exploit
+com2sec  local       localhost          public
+
+
+##       Access.group.name   sec.model        sec.name
+##       =================  =========         ========
+group    MyROGroup           v2c               network_exploit
+group    MyROGroup           v2c               local
+##   MIB.view.name     incl/excl  MIB.subtree  mask
+##   ==============   =========  ===========  ====
+view all         included   .1           80
+
+##      MIB
+##      group.name context sec.model sec.level prefix read     write  notif
+##      ========== ======= ========= ========= ====== ====     =====  =====
+access  MyROGroup  ""       v2c       noauth    exact      all none   none
+
+# Implementation d'une partie d'une mib - Recuperation d informations via la mib perso 28268
+
+exec .1.3.6.1.4.1.28268.1 LangageSys /usr/local/bin/GSLinux_addMIB.pl langage_sys
+exec .1.3.6.1.4.1.28268.2 Architecture /usr/local/bin/GSLinux_addMIB.pl architecture
+exec .1.3.6.1.4.1.28268.3.1 CountLinePrinters /usr/local/bin/GSLinux_addMIB.pl countligneimpr
+exec .1.3.6.1.4.1.28268.3.2 ImprDispo /usr/local/bin/GSLinux_addMIB.pl impr_dispo
+exec .1.3.6.1.4.1.28268.3.3 ServerImpression /usr/local/bin/GSLinux_addMIB.pl ServerImpression
+exec .1.3.6.1.4.1.28268.4 MarqueMateriel /usr/local/bin/GSLinux_addMIB.pl marque_materiel
+exec .1.3.6.1.4.1.28268.5 NomDomaineMachine /usr/local/bin/GSLinux_addMIB.pl nomdomaine_machine
+exec .1.3.6.1.4.1.28268.6.1 TypeMemVirt /usr/local/bin/GSLinux_addMIB.pl typememvirt
+exec .1.3.6.1.4.1.28268.6.2 ListeMemVirt /usr/local/bin/GSLinux_addMIB.pl ListeMemVirt
+exec .1.3.6.1.4.1.28268.7 EmplacementMeM /usr/local/bin/GSLinux_addMIB.pl place_memdevice
+exec .1.3.6.1.4.1.28268.8 PeriphSCSI  /usr/local/bin/GSLinux_addMIB.pl periph_scsi
+exec .1.3.6.1.4.1.28268.9 PartageNFS /usr/local/bin/GSLinux_addMIB.pl partage_nfs
+exec .1.3.6.1.4.1.28268.10.1 ListApplicationExport /usr/local/bin/GSLinux_addMIB.pl listapplicationexport
+exec .1.3.6.1.4.1.28268.10.2 ListApplicationClusterExport /usr/local/bin/GSLinux_addMIB.pl listapplicationclusterexport
+exec .1.3.6.1.4.1.28268.11.1 ProdFreeware /usr/local/bin/GSLinux_addMIB.pl produits_free
+exec .1.3.6.1.4.1.28268.11.2 ProdAppli /usr/local/bin/GSLinux_addMIB.pl produits_appli
+exec .1.3.6.1.4.1.28268.12 TestSamba /usr/local/bin/GSLinux_addMIB.pl testsamba
+exec .1.3.6.1.4.1.28268.13 SysExploi /usr/local/bin/GSLinux_addMIB.pl SysExploi
+exec .1.3.6.1.4.1.28268.13.1 DateInstall /usr/local/bin/GSLinux_addMIB.pl DateInstall
+exec .1.3.6.1.4.1.28268.14.1 CountUser /usr/local/bin/GSLinux_addMIB.pl CountUser
+exec .1.3.6.1.4.1.28268.14.2 UserCron /usr/local/bin/GSLinux_addMIB.pl UserCron
+exec .1.3.6.1.4.1.28268.14.3 TachePlanni /usr/local/bin/GSLinux_addMIB.pl TachePlanni
+exec .1.3.6.1.4.1.28268.15 NumberSerial /usr/local/bin/GSLinux_addMIB.pl NumberSerial
+exec .1.3.6.1.4.1.28268.16 KernelVersion /usr/local/bin/GSLinux_addMIB.pl KernelVersion
+exec .1.3.6.1.4.1.28268.17 ModeleMachine /usr/local/bin/GSLinux_addMIB.pl ModeleMachine
+exec .1.3.6.1.4.1.28268.18.1 CpuCountInfo /usr/local/bin/GSLinux_addMIB.pl CpuCountInfo
+exec .1.3.6.1.4.1.28268.18.2 CpuinfoName /usr/local/bin/GSLinux_addMIB.pl CpuinfoName
+exec .1.3.6.1.4.1.28268.19 CarteGraphique /usr/local/bin/GSLinux_addMIB.pl CarteGraphique
+exec .1.3.6.1.4.1.28268.20 BiosInfo /usr/local/bin/GSLinux_addMIB.pl BiosInfo
+exec .1.3.6.1.4.1.28268.21 Periph_info /usr/local/bin/GSLinux_addMIB.pl Periph_info
+exec .1.3.6.1.4.1.28268.22.1 RaidChartName /usr/local/bin/GSLinux_addMIB.pl RaidChartName
+exec .1.3.6.1.4.1.28268.23.1 Nom_Interface /usr/local/bin/GSLinux_addMIB.pl Nom_Interface
+exec .1.3.6.1.4.1.28268.23.2 Bus_Nom_Interface /usr/local/bin/GSLinux_addMIB.pl Bus_Nom_Interface
+exec .1.3.6.1.4.1.28268.23.3 Nom_carte_reseau /usr/local/bin/GSLinux_addMIB.pl Nom_carte_reseau
+exec .1.3.6.1.4.1.28268.23.4 Bus_carte_reseau /usr/local/bin/GSLinux_addMIB.pl Bus_carte_reseau
+exec .1.3.6.1.4.1.28268.23.5 MacAddress_Interface /usr/local/bin/GSLinux_addMIB.pl MacAddress_Interface
+exec .1.3.6.1.4.1.28268.23.6 Address_Interface /usr/local/bin/GSLinux_addMIB.pl Address_Interface
+exec .1.3.6.1.4.1.28268.23.7 PasserelleDefaut /usr/local/bin/GSLinux_addMIB.pl PasserelleDefaut
+exec .1.3.6.1.4.1.28268.23.8 ConfigDNS /usr/local/bin/GSLinux_addMIB.pl ConfigDNS
+exec .1.3.6.1.4.1.28268.23.9 Vitesse_carte_reseau /usr/local/bin/GSLinux_addMIB.pl Vitesse_carte_reseau
+exec .1.3.6.1.4.1.28268.23.10 Duplex_carte_reseau /usr/local/bin/GSLinux_addMIB.pl Duplex_carte_reseau
+exec .1.3.6.1.4.1.28268.24.1 ComptMontage /usr/local/bin/GSLinux_addMIB.pl ComptMontage
+exec .1.3.6.1.4.1.28268.24.2 Montage /usr/local/bin/GSLinux_addMIB.pl Montage
+exec .1.3.6.1.4.1.28268.25.1 SambaTestActivite /usr/local/bin/GSLinux_addMIB.pl SambaTestActivite
+exec .1.3.6.1.4.1.28268.25.2 SambaInfoConfig /usr/local/bin/GSLinux_addMIB.pl SambaInfoConfig
+exec .1.3.6.1.4.1.28268.25.3 CompteSamba /usr/local/bin/GSLinux_addMIB.pl CompteSamba
+exec .1.3.6.1.4.1.28268.25.4 SambaListingPartage /usr/local/bin/GSLinux_addMIB.pl SambaListingPartage
+exec .1.3.6.1.4.1.28268.26.1 DomainNIS /usr/local/bin/GSLinux_addMIB.pl DomainNIS
+exec .1.3.6.1.4.1.28268.26.2 NISServeurMaitre /usr/local/bin/GSLinux_addMIB.pl NISServeurMaitre
+exec .1.3.6.1.4.1.28268.27.1 AutoMontage /usr/local/bin/GSLinux_addMIB.pl AutoMontage
+exec .1.3.6.1.4.1.28268.28.1 ListingAccountSysName /usr/local/bin/GSLinux_addMIB.pl ListingAccountSys_Name
+exec .1.3.6.1.4.1.28268.28.2 ListingAccountSysCom /usr/local/bin/GSLinux_addMIB.pl ListingAccountSys_Com
+exec .1.3.6.1.4.1.28268.28.3 ListingAccountSysDirec /usr/local/bin/GSLinux_addMIB.pl ListingAccountSys_Direc
