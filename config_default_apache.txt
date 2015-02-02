@@ -11,11 +11,11 @@ redirection vers service tomcat
 <VirtualHost *:443>
         ProxyPass /nuxeo/ ajp://127.0.0.1:8009/nuxeo/
         ProxyPassReverse /nuxeo/ ajp://127.0.0.1:8009/nuxeo/
-        RedirectMatch (^/$)|(/nuxeo(.*)) https://toto.irsn.fr/nuxeo/
+        RedirectMatch (^/$)|(/nuxeo(.*)) https://toto.fr/nuxeo/
         SSLEngine on
-        SSLCertificateFile /etc/apache2/ssl/toto.intra.irsn.fr.pem
+        SSLCertificateFile /etc/apache2/ssl/toto.fr.pem
         SSLCertificateKeyFile /etc/apache2/ssl/pleiade-qualif-new.key
-        SSLCertificateChainFile /etc/apache2/ssl/toto.irsn.fr.pem
+        SSLCertificateChainFile /etc/apache2/ssl/toto.fr.pem
         LogLevel warn
         ErrorLog /var/log/apache2/apache-ssl.error.log
         CustomLog /var/log/apache2/apache-ssl.log combined
