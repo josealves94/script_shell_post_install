@@ -1,0 +1,54 @@
+Procédure modification mémoire sur xen serveur pour les serveurs apibu201v/apibu202v
+
+*) Vérifier laquelle des deux machines est le slave
+
+*) Faire un view du fichier de configuration d'un des serveurs de production depuis le xen :
+	$ view /etc/xen/$NOMVM
+	
+   Noter la valeur associée à "memory"
+
+*) Arrêter la machine slave depuis l'hyperviseur :
+    $ xm shutdown $NOMVM
+
+*) Éditer le fichier de configuration de cette VM :
+	$ vim /etc/xen/$NOMVM pour modifier la valeur associée à "memory"
+
+*) Redémarrer la vm :
+	$ xm create /etc/xen/$NOMVM
+
+*) Vérifier que la vm est bien redémarrer avec
+	$ xm list
+
+*) Se connecter sur la vm que l'on vient de redémarrer en ssh et vérifier que la mémoire est correct :
+	$ free -m
+
+*) Vérifier que la réplication est en place et bonne :
+	$ watch_cluster
+	On doit voir que tout est uptodate : "st:Secondary/Primary ds:UpToDate/UpToDate"
+	
+
+*) Une fois que le slave est uptodate provoquer une bascule pour que le slave dont la mémoire est configurée deviennent le master
+	$ hb_takeover (à exécuter sur le slave)
+
+*) Vérifier qu'il est bien maitre :
+	$ watch_cluster
+	On doit avoir l'inverse de tout à l'heure : "st:Primary/Secondary ds:UpToDate/UpToDate"
+
+*) Aller sur l'hyperviseur et arrêter la machine slave (ancien master):
+    $ xm shutdown $NOMVM
+
+*) Éditer le fichier de configuration de cette VM :
+	$ vim /etc/xen/$NOMVM pour modifier la valeur associée à "memory"
+
+*) Redémarrer la vm :
+	$ xm create /etc/xen/$NOMVM
+
+*) Se connecter sur la vm que l'on vient de redémarrer en ssh et vérifier que la mémoire est correct :
+	$ free -m
+
+*) Vérifier que la réplication est en place et bonne :
+	$ watch_cluster
+	On doit voir que tout est uptodate : "st:Secondary/Primary ds:UpToDate/UpToDate"
+
+*) Provoquer une bascule pour que le slave dont la mémoire est configuré deviennent le master et ainsi revenir à l'état initial
+	$ hb_takeover (à exécuter sur le slave)
