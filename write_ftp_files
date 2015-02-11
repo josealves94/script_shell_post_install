@@ -1,0 +1,105 @@
+#!/bin/bash
+#  Purpose :
+#
+#   - Checks for new files on a FTP server, move
+#   them to a CIFS mounted volume and alerts users by email.
+# 
+#  Requirements :
+#
+#   - configured mail system
+#   - lftp client installed
+#   - nmap tool installed
+#   - mounted RW CIFS volume with -charset=ISO-8859-15 option
+#
+#  Documentation :
+#
+#   - Documentation available on NeuronesBox
+#
+#  Misc :
+#
+#  - This text file contains latin-1 characters. Please,
+#  configure your favortie text editor.
+
+FTP_BINARY="/usr/bin/lftp"
+#MAIL_BINARY="/bin/mail"
+MAIL_BINARY="/usr/bin/mutt"
+NMAP_BINARY="/usr/bin/nmap"
+# FTP Configuration (SRC)
+FTP_DIR_CATALOGUES="repertoires_test"
+FTP_DIR_CONTRATS="contrats_REP"
+FTP_ADDR="ftp.toto.fr"
+FTP_PORT=21
+FTP_USERNAME="repertoires_test"
+FTP_PASSWORD="toto"
+
+# CIFS Configuration (DEST)
+DST_DIR_CATALOGUES="/mnt/cifs/test"
+DST_DIR_CATALOGUES_ARCHIVE="/mnt/cifs/test/archive toto"
+DST_DIR_CONTRATS="/mnt/cifs/test/contrats"
+DST_DIR_CONTRATS_ARCHIVE="/mnt/cifs/test/contrats/archive"
+# Mail configuration
+MAIL_ADDR="test@toto.fr"
+
+quit_properly()
+{
+    if [ $1 -eq 1 ]; then
+        printf "Script failed with the following error:\n\n\t$2\n\nPlease, contact your system administrator.\n" | $MAIL_BINARY -s "[SERVICE_ACHAT] Script_failed_with_error" $MAIL_ADDR -- -F $MAIL_ADDR
+        exit 1
+    fi
+}
+
+copy_to_folder()
+{
+    case $1 in
+        CATALOGUES)
+            DST_UNC_CATALOGUES=$(echo $DST_DIR_CATALOGUES | sed -e 's/^\/mnt\/cifs\/dafcj/\/\/stockagefont/g' | sed -e 's/\//\\/g')
+            $FTP_BINARY -c "open $FTP_ADDR; user $FTP_USERNAME $FTP_PASSWORD; cd $FTP_DIR_CATALOGUES; set xfer:clobber yes; mget -O \"$DST_DIR_CATALOGUES_ARCHIVE\" *; mget -O \"$DST_DIR_CATALOGUES\" *; mrm *; exit bg" > /dev/null 2>&1
+            printf "%s\n\n%s\n\n\t%s\n\n%s\n" "Bonjour," "De nouveaux catalogues sont disponibles à l'emplacement suivant :" "<$DST_UNC_CATALOGUES>" "Bonne reception." | $MAIL_BINARY -s "[SERVICE_ACHAT] Nouveaux_catalogues_disponibles" $MAIL_ADDR -- -F $MAIL_ADDR
+            ;;
+CONTRATS)
+            DST_UNC_CONTRATS=$(echo $DST_DIR_CONTRATS | sed -e 's/^\/mnt\/cifs\/dafcj/\/\/stockagefont/g' | sed -e 's/\//\\/g')
+            $FTP_BINARY -c "open $FTP_ADDR; user $FTP_USERNAME $FTP_PASSWORD; cd $FTP_DIR_CONTRATS; set xfer:clobber yes; mget -O \"$DST_DIR_CONTRATS_ARCHIVE\" *; mget -O \"$DST_DIR_CONTRATS\" *; mrm *; exit bg" > /dev/null 2>&1
+            printf "%s\n\n%s\n\n\t%s\n\n%s\n" "Bonjour," "De nouveaux contrats sont disponibles à l'emplacement suivant :" "<$DST_UNC_CONTRATS>" "Bonne reception." | $MAIL_BINARY -s "[SERVICE_ACHAT] Nouveaux_contrats_disponibles" $MAIL_ADDR -- -F $MAIL_ADDR
+            ;;
+    esac
+}
+check_for_new_files()
+{
+    test $($FTP_BINARY -p$FTP_PORT -c "open $FTP_ADDR; user $FTP_USERNAME $FTP_PASSWORD; ls $FTP_DIR_CATALOGUES; bye" | wc -l) -gt 0 && copy_to_folder CATALOGUES
+    test $($FTP_BINARY -p$FTP_PORT -c "open $FTP_ADDR; user $FTP_USERNAME $FTP_PASSWORD; ls $FTP_DIR_CONTRATS; bye" | wc -l) -gt 0 && copy_to_folder CONTRATS
+}
+
+check_dependencies()
+{
+    export LC_CTYPE=POSIX
+
+    if [ $# -eq 0 ]; then
+        if (  ! which $MAIL_BINARY > /dev/null 2>&1 ); then
+            echo "Error: $MAIL_BINARY client command not found in \$PATH variable."
+            exit 1
+        elif (  ! which $FTP_BINARY > /dev/null 2>&1 ); then
+            quit_properly 1 "Error: $FTP_BINARY client command not found in \$PATH variable."
+        elif (  ! which $NMAP_BINARY > /dev/null 2>&1 ); then
+            quit_properly 1 "Error: $NMAP_BINARY client command not found in \$PATH variable."
+        elif ( ! nmap -P0 -p$FTP_PORT $FTP_ADDR | grep open > /dev/null 2>&1 ); then
+            quit_properly 1 "Error: FTP server $FTP_ADDR not reachable on port $FTP_PORT."
+        elif [ ! -w "$DST_DIR_CATALOGUES" -o ! -w "$DST_DIR_CONTRATS" -o ! -w "$DST_DIR_CATALOGUES_ARCHIVE" -o ! -w "$DST_DIR_CONTRATS_ARCHIVE" ]; then
+            sleep 5
+                [ ! -w "$DST_DIR_CATALOGUES" -o ! -w "$DST_DIR_CONTRATS" -o ! -w "$DST_DIR_CATALOGUES_ARCHIVE" -o ! -w "$DST_DIR_CONTRATS_ARCHIVE" ] && quit_properly 1 "Error: Can't acess/write into CIFS destination directory."
+        fi
+    else
+        echo "Error: $(basename $0) is designed for non-intercative purpose."
+        exit 1
+    fi
+}
+
+main()
+{
+# set -x
+    check_dependencies
+# set -x
+    check_for_new_files
+# set -x
+}
+
+main
