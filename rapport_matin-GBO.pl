@@ -336,3 +336,46 @@ sub txtOutput
                                 else
                                 {
                                 
+                                        printf "\t\t\t%s\t%s\n", $rh_DIDetail->{'Path'}, colored ['red'], $rh_DIDetail->{'Status'};
+                                }
+
+                        }
+
+                }
+
+
+        }
+ printf colored ['yellow'], "\n\nStatistiques:\n\n";
+
+        foreach my $rh_stats ( @$rah_stats )
+        {
+
+                printf "%s\nTaille totale: %6.0f Go\nNombre de fichiers: %d\nNombre de serveurs: %d\n\n", $rh_stats->{'Name'}, $rh_stats->{'Size'} /1024 /1024, $rh_stats->{'NFiles'}, $rh_stats->{'NClients'};
+
+        }
+
+
+        my $job;
+
+        printf colored ['yellow'], "\n\nSauvegardes en cours:\n\n";
+
+        #for $job (@$txt_ra_jobs) 
+        for $job (sort{ $a->{'client'} cmp  $b->{'client'} } @$txt_ra_jobs )
+          {
+
+                printf "\t%s\t%s\tAvancement %d%% commence le %s \n", &prettyfy( $job->{'client'}, "text" ), &prettyfy( $job->{'policy'}, "text"  ), $job->{'percent'}, $job->{'start_text'} if ( ( $job->{'state'} == 1 ) &&  ( $job->{'jobtype'} == 0 ) && ( ! ($job->{'policy'} =~ /DSSU/  ) ) && ( $job->{'schedule'} ne '-'   )  );
+                #printf $job->{'client'} if ( $job && ( $job->{'state'} == 1 ) && ( ( $job->{'jobtype'} == 0 ) ||  ( $job->{'jobtype'} == 6 ) ) ); 
+
+        }
+
+        printf colored ['yellow'], "\n\nSauvegardes invalides:\n\n";
+
+        #for $job (@$txt_ra_jobs) 
+for $job (sort{ $a->{'client'} cmp  $b->{'client'} } @$txt_ra_jobs )
+        {
+
+                #printf "\t%s\t%s %s \n", &prettyfy( $job->{'client'}, "text"  ), &prettyfy( $job->{'policy'}, "text"  ), $job->{'explain'} if ( ( $job->{'jobtype'} == 0 ) && ( $job->{'start'} >= $start_time )  && ( $job->{'status'} ) && ( $job->{'status'} > 1 ) && ( ! ($job->{'policy'} =~ /DSSU/  ) ) && ( $job->{'schedule'} ne '-' )  ); 
+                printf "\t%s\t%s %s \n", &prettyfy( $job->{'client'}, "text"  ), &prettyfy( $job->{'policy'}, "text"  ), $job->{'explain'} if ( ( $job->{'jobtype'} == 0 ) && ( $job->{'start'} >= $start_time )  && ( $job->{'status'} ) && ( $job->{'status'} > 1 ) && ( ! ($job->{'policy'} =~ /DSSU/  ) ) );
+
+        }
+        
