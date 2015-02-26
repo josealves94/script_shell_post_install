@@ -1,10 +1,10 @@
 [global]
-    workgroup = PROTON
-    realm = proton.intra.irsn.fr
-    netbios name = appwu201v
-    server string = %h Pleiade v2 Pre-Production
+    workgroup = PARIS
+    realm = paris.intra.toto.fr
+    netbios name = opawu201v
+    server string = %h Aplication v2 Pre-Production
     security = ADS
-    password server = ADCOS101 ADCOS102
+    password server = SRV_AD1 SRV_AD2
     encrypt passwords = true
     idmap uid = 10000-20000
     idmap gid = 10000-20000
@@ -29,4 +29,4 @@
     guest ok = no
     browseable = yes
     read only = yes
-    valid users = PROTON\TATA-TAR PROTON\TOTO-JUL PROTON\ALVES-jOS
+    valid users = PARIS\TATA-TAR PARIS\TOTO-JUL PARIS\ALVES-jOS
