@@ -8,34 +8,26 @@
 #########################################################################
 
 
-#dlmod cmaX /usr/lib/libcmaX.so # 32bits
-#dlmod cmaX /usr/lib64/libcmaX64.so # 64 Bits
+# This is the SNMPD.CONF HP (x86_64) configuration file
+dlmod cmaX /usr/lib64/libcmaX64.so
 
-rocommunity exploit 81.194.4.11
-rocommunity public 127.0.0.1
+rwcommunity exploit serveur1
+rwcommunity exploit serveur2
+rocommunity public localhost
+trap2sink titicaca exploit
 
-## Securite
-##       sec.name     source           community
-##       ========     ======           =========
-com2sec  network_exploit  192.168.1.0/24        exploit
-com2sec  local       localhost          public
+com2sec  remote         serveur1        exploit
+com2sec  remote         serveur2        exploit
+com2sec  local          localhost       public
 
-
-##       Access.group.name   sec.model        sec.name
-##       =================  =========         ========
-group    MyROGroup           v2c               network_exploit
+group    MyROGroup           v2c               remote
 group    MyROGroup           v2c               local
-##   MIB.view.name     incl/excl  MIB.subtree  mask
-##   ==============   =========  ===========  ====
+
 view all         included   .1           80
 
-##      MIB
-##      group.name context sec.model sec.level prefix read     write  notif
-##      ========== ======= ========= ========= ====== ====     =====  =====
 access  MyROGroup  ""       v2c       noauth    exact      all none   none
 
 # Implementation d'une partie d'une mib - Recuperation d informations via la mib perso 28268
-
 exec .1.3.6.1.4.1.28268.1 LangageSys /usr/local/bin/GSLinux_addMIB.pl langage_sys
 exec .1.3.6.1.4.1.28268.2 Architecture /usr/local/bin/GSLinux_addMIB.pl architecture
 exec .1.3.6.1.4.1.28268.3.1 CountLinePrinters /usr/local/bin/GSLinux_addMIB.pl countligneimpr
