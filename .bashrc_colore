@@ -1,0 +1,55 @@
+HISTCONTROL=$HISTCONTROL${HISTCONTROL+:}ignoredups
+
+HISTCONTROL=ignoreboth
+
+# infinite history don't overwrite it
+shopt -s histappend
+
+force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+        if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+          color_prompt=yes
+        else
+          color_prompt=
+        fi
+fi
+if [ "$UID" -ne 0 ]
+         then
+                if [ "$color_prompt" = yes ]; then
+                PS1='${debian_chroot:+($debian_chroot)}\[\033[01;36m\]\t \[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;37m\]\h\[\033[01;33m\]:\[\033[01;32m\]\w\[\033[01;33m\]\$\[\033[00m\] '
+                else
+                 PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+                fi
+                else
+                if [ "$color_prompt" = yes ]; then
+                PS1='${debian_chroot:+($debian_chroot)}\[\033[01;36m\]\t \[\033[01;34m\]\u\[\033[01;33m\]@\[\033[01;37m\]\h\[\033[01;33m\]:\[\033[01;32m\]\w\[\033[01;33m\]\$\[\033[00m\] '
+                else
+                PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+                fi
+
+fi
+
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
+
+# You may uncomment the following lines if you want `ls' to be colorized:
+ export LS_OPTIONS='--color=auto'
+ eval "`dircolors`"
+ alias ls='ls $LS_OPTIONS'
+ alias ll='ls $LS_OPTIONS -l'
+ alias l='ls $LS_OPTIONS -lA'
+#
+# Some more alias to avoid making mistakes:
+ alias rm='rm -i'
+ alias cp='cp -i'
+ alias mv='mv -i'
+ alias zdns='cat /root/scripts/resolv.conf.bak_JAL > /etc/resolv.conf'
+ alias st='ssh -o ServerAliveInterval=90'
