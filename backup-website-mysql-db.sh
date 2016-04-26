@@ -3,10 +3,10 @@
 
 USER="root"
 PASS="Dsq45qd%$[45"
-BACKUP_FILE="db-svo-lwik001-`date +%s`.sql.gz"
-BACKUP_DESTINATION="/data/ftp/ssh-backups/svo-lwik001/db/"
-BACKUP_SERVER="hamster.coyote.local"
-BACKUP_SERVER_USER="root"
+BACKUP_FILE="db-srv-src-`date +%s`.sql.gz"
+BACKUP_DESTINATION="/data/ftp/ssh-backups/srv-src/db/"
+BACKUP_SERVER="serveur_destination.local"
+BACKUP_SERVER_USER="user_sql"
 EXIT=0
 
 main() {
