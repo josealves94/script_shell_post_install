@@ -19,11 +19,11 @@ main() {
                 exit 1
         fi
 
-        /bin/echo "##`date +"%F %H:%m:%S"` - Début du transfert vers hamster"
+        /bin/echo "##`date +"%F %H:%m:%S"` - Début du transfert vers serveur de destination"
         /usr/bin/scp "/mnt/wikibackup/$BACKUP_FILE" "$BACKUP_SERVER_USER@$BACKUP_SERVER:$BACKUP_DESTINATION"
         if [[ $? != 0 ]]
         then
-                /bin/echo "##`date +"%F %H:%m:%S"` - Erreur lors du transfert vers hamster"
+                /bin/echo "##`date +"%F %H:%m:%S"` - Erreur lors du transfert vers serveur de destination"
                 exit 1
         fi
 
