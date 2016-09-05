@@ -127,7 +127,7 @@ then
 # echo -e "test 2 ok\n"
 echo "************* Ajout du proxy *************"
 echo "export HTTP_PROXY='http://user_int:passwd@toto.com:3128'" >> /etc/profile
-echo "proxy=http://wpad.proton.intra.irsn.fr:3128/" >> /etc/yum.conf
+echo "proxy=http://user_int:passwd@toto.com:3128" >> /etc/yum.conf
 echo "proxy_username=PROTON\a-internet" >> /etc/yum.conf
 echo "proxy_password=16am*int" >> /etc/yum.conf
 
