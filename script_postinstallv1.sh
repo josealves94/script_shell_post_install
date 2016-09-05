@@ -62,7 +62,7 @@ then
  echo -e "************* desactivation de l'ipv6 *************\n"
 echo "net.ipv6.conf.all.disable_ipv6=1" >> /etc/sysctl.conf
 echo "************* Ajout du proxy *************\n"
-echo 'Acquire::http::Proxy "http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128";' > /etc/apt/apt.conf
+echo 'Acquire::http::Proxy "http://user_int:passwd@toto.com:3128";' > /etc/apt/apt.conf
 
 echo "************* Installation d'openssh *************\n"
 apt-get install -y openssh-server
@@ -126,7 +126,7 @@ if [ "$reponse" = 'o' ];
 then
 # echo -e "test 2 ok\n"
 echo "************* Ajout du proxy *************"
-echo "export HTTP_PROXY='http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128'" >> /etc/profile
+echo "export HTTP_PROXY='http://user_int:passwd@toto.com:3128'" >> /etc/profile
 echo "proxy=http://wpad.proton.intra.irsn.fr:3128/" >> /etc/yum.conf
 echo "proxy_username=PROTON\a-internet" >> /etc/yum.conf
 echo "proxy_password=16am*int" >> /etc/yum.conf
@@ -148,7 +148,7 @@ echo "************* installation et activation du nis *************"
 yum install -y ypbind
 chmod 1777 /home
 
-echo "domain dpei server nis-dpei-master.neutron.intra.irsn.fr
+echo "domain dpei server nis-dpei-master.toto.com
 domain dpei server nis-dpei-slave.neutron.intra.irsn.fr" >> /etc/yp.conf
 sed -i 's#passwd:     files#passwd: nis files#g' /etc/nsswitch.conf
 sed -i 's#shadow:     files#shadow: nis files#g' /etc/nsswitch.conf
@@ -188,8 +188,8 @@ then
 # echo -e "test 3 ok\n"
 echo "managed=true" >> /etc/NetworkManager/NetworkManager.conf
 echo "************* Ajout du proxy *************"
-echo "export HTTP_PROXY=a-internet:16am*int@wpad.proton.intra.irsn.fr:3128" >> /etc/profile
-echo "proxy=http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128/" >> /etc/yum.conf 
+echo "export HTTP_PROXY=http://user_int:passwd@toto.com:3128" >> /etc/profile
+echo "proxy=http://user_int:passwd@toto.com:3128/" >> /etc/yum.conf 
  
 echo "************* Desactivation de selinux *************"
 selinuxenabled
@@ -238,9 +238,9 @@ if [ "$reponse" = 'o' ];
 then
  #echo -e "test 4 ok\n"
  echo  "************* Configuration du proxy *************"
- echo 'ACQUIRE { http::proxy "http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128" }' > /etc/apt/apt.conf.d/02proxy
+ echo 'ACQUIRE { http::proxy "http://user_int:passwd@toto.com:3128" }' > /etc/apt/apt.conf.d/02proxy
 
- echo "export http_proxy=http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128" >> /etc/profile
+ echo "export http_proxy=http://user_int:passwd@toto.com:3128" >> /etc/profile
 
  echo "************* Desactivation de l'ipv6 *************"
 
@@ -310,9 +310,9 @@ if [ "$reponse" = 'o' ];
 then
  #echo -e "test 4 ok\n"
  echo  "************* Configuration du proxy *************"
- echo 'ACQUIRE { http::proxy "http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128" }' > /etc/apt/apt.conf.d/02proxy
+ echo 'ACQUIRE { http::proxy "http://user_int:passwd@toto.com:3128" }' > /etc/apt/apt.conf.d/02proxy
 
- echo "export http_proxy=http://a-internet:16am*int@wpad.proton.intra.irsn.fr:3128" >> /etc/profile
+ echo "export http_proxy=http://user_int:passwd@toto.com:3128" >> /etc/profile
 
  echo "************* Desactivation de l'ipv6 *************"
 
