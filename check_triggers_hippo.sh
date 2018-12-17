@@ -13,9 +13,9 @@ STATE_WARNING=1
 STATE_CRITICAL=2
 STATE_UNKNOWN=3
 
-USER="coyotadmin"
-PASS='acjnpplt'
-HOST='192.168.2.43'
+USER="XXXXX"
+PASS='XXXXX'
+HOST='XXXXXXX'
 #FIC_TRIG="/tmp/fich_temp_check_trigger.tmp_${dateduj}"
 #dateduj=$(date +%Y-%m-%d )
 MDB="$1"
