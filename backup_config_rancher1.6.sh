@@ -7,8 +7,8 @@
 #
 ##############################
 
-RANCHER_ACCESS_KEY="FC1848633D4FA77DE391"
-RANCHER_SECRET_KEY="NE6BcC422xtiWZx6q2wEozDwo4aibrXk6cKM9jDf"
+RANCHER_ACCESS_KEY=""
+RANCHER_SECRET_KEY=""
 ERROR=0
 DATEOFDAY=$(date +%F)
 BACKUP="/opt/backup/backup_rancher_conf_${DATEOFDAY}.tgz"
