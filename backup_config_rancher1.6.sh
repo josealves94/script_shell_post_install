@@ -13,7 +13,7 @@ ERROR=0
 DATEOFDAY=$(date +%F)
 BACKUP="/opt/backup/backup_rancher_conf_${DATEOFDAY}.tgz"
 
-MAILTO='BLA <bertrand.lagrange@groupepvcp.com>, JAL <jose.alves@groupepvcp.com>'
+MAILTO='<alves@intechinfo.fr>'
 # Error Function
 
 # Mail error
